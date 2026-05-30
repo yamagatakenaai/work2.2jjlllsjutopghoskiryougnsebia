@@ -1,0 +1,15 @@
+{
+  "name": "出勤簿アプリ",
+  "short_name": "出勤簿",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4facfe",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>出勤簿アプリ</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon-192.png">
+</head>
+
+<body>
+    <div class="container">
+        <div class="theme-switch-container">
+            <button id="btn-theme-toggle" class="theme-toggle-btn" aria-label="テーマ切り替え">☀️</button>
+        </div>
+        <h1>出勤簿</h1>
+
+        <div class="tabs" id="user-tabs">
+            <input type="radio" id="yokozawa" name="user" value="横澤" checked>
+            <label for="yokozawa" class="tab-label">横澤</label>
+
+            <input type="radio" id="suzuki" name="user" value="鈴木">
+            <label for="suzuki" class="tab-label">鈴木</label>
+        </div>
+
+        <!-- オートモード設定 -->
+        <div class="auto-mode-section">
+            <span class="auto-mode-label">オートモード</span>
+            <div class="auto-toggle-container">
+                <input type="checkbox" id="auto-mode-toggle" class="auto-toggle-checkbox">
+                <label for="auto-mode-toggle" class="auto-toggle-switch">
+                    <span class="auto-toggle-inner"></span>
+                    <span class="auto-toggle-switch-btn"></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="buttons" id="action-buttons">
+            <button id="btn-in" class="stamp-btn in">出勤</button>
+            <button id="btn-out" class="stamp-btn out">退勤</button>
+        </div>
+
+        <div id="confirm-section" class="hidden">
+            <p id="confirm-text" class="confirm-message">この時間でよろしいですか？</p>
+            <input type="datetime-local" id="datetime-input" class="datetime-input">
+            <div class="confirm-buttons">
+                <button id="btn-cancel" class="cancel-btn">キャンセル</button>
+                <button id="btn-confirm" class="stamp-btn confirm-btn">決定</button>
+            </div>
+        </div>
+
+        <div id="status-message" class="message"></div>
+
+        <!-- カレンダーエリア -->
+        <div class="calendar-container">
+            <div class="calendar-header">
+                <button id="btn-prev-month" class="cal-nav-btn">&lt;</button>
+                <h3 id="calendar-title">2026年 5月</h3>
+                <button id="btn-next-month" class="cal-nav-btn">&gt;</button>
+            </div>
+            <div class="calendar-controls">
+                <button id="btn-holiday-mode" class="holiday-mode-btn">個別休日</button>
+                <button id="btn-company-holiday" class="holiday-mode-btn">会社休日指定</button>
+            </div>
+            <div class="calendar-weekdays">
+                <div>日</div>
+                <div>月</div>
+                <div>火</div>
+                <div>水</div>
+                <div>木</div>
+                <div>金</div>
+                <div>土</div>
+            </div>
+            <div id="calendar-body" class="calendar-grid">
+                <!-- JSで日付マスを動的生成 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 編集ポップアップモーダル -->
+    <div id="edit-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-date-title">2026/05/30 の打刻情報</h3>
+                <span id="btn-close-modal" class="close-btn">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="modal-records-list">
+                    <!-- その日の打刻一覧がここに表示される -->
+                </div>
+                
+                <hr class="modal-divider">
+                
+                <!-- 新規打刻追加・編集フォーム -->
+                <div class="add-record-form">
+                    <h4 id="form-action-title">打刻の追加/編集</h4>
+                    <div class="form-group">
+                        <label for="form-user">名前:</label>
+                        <select id="form-user" class="form-control">
+                            <option value="横澤">横澤</option>
+                            <option value="鈴木">鈴木</option>
+                            <option value="会社">会社</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-type">区分:</label>
+                        <select id="form-type" class="form-control">
+                            <option value="出勤">出勤</option>
+                            <option value="退勤">退勤</option>
+                            <option value="休日">休日</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-time">時間:</label>
+                        <input type="time" id="form-time" class="form-control">
+                    </div>
+                    <input type="hidden" id="form-row-num"> <!-- 編集用行番号保持 -->
+                    <button id="btn-save-record" class="save-record-btn">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 会社休日指定モーダル -->
+    <div id="company-holiday-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>会社休日の指定</h3>
+                <span id="btn-close-company-modal" class="close-btn">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="company-holiday-start">開始日:</label>
+                    <input type="date" id="company-holiday-start" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="company-holiday-end">終了日:</label>
+                    <input type="date" id="company-holiday-end" class="form-control">
+                </div>
+                <button id="btn-save-company-holiday" class="save-record-btn">登録</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('SW registered!', reg))
+                .catch(err => console.log('SW registration failed: ', err));
+        }
+    </script>
+</body>
+
+</html>

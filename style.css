@@ -1,0 +1,810 @@
+body {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.container {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 20px;
+    max-width: 500px;
+    width: 100%;
+    position: relative; /* テーマ切り替えボタンの配置用 */
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.tabs {
+    display: flex;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 25px;
+    padding: 5px;
+    margin-bottom: 30px;
+}
+
+.tabs input[type="radio"] {
+    display: none;
+}
+
+.tab-label {
+    cursor: pointer;
+    flex: 1;
+    padding: 12px 0;
+    text-align: center;
+    border-radius: 20px;
+    transition: background 0.3s, color 0.3s, font-weight 0.3s;
+    color: #555;
+    font-size: 1.1rem;
+}
+
+.tabs input[type="radio"]:checked+.tab-label {
+    background: #fff;
+    color: #0061ff;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.hidden {
+    display: none !important;
+}
+
+.confirm-message {
+    color: #fff;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.datetime-input {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    font-family: inherit;
+}
+
+.confirm-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.cancel-btn {
+    border: none;
+    padding: 15px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.5);
+    color: #333;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.cancel-btn:active {
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.confirm-btn {
+    padding: 15px;
+    font-size: 1.1rem;
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.stamp-btn {
+    border: none;
+    padding: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 12px;
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.2s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.stamp-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.in {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.out {
+    background: linear-gradient(135deg, #434343 0%, black 100%);
+    /* Deep Grey/Black for "Finish" */
+    color: #fff;
+    /* Alternatively, for Blue Theme: */
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+}
+
+.message {
+    min-height: 20px;
+    font-size: 0.9rem;
+    color: #fff;
+    font-weight: bold;
+    margin-top: 10px;
+    white-space: pre-line; /* 改行を有効にする */
+}
+
+/* オートモードトグルスイッチ */
+.auto-mode-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.auto-mode-label {
+    color: #fff;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.auto-toggle-container {
+    position: relative;
+}
+
+.auto-toggle-checkbox {
+    display: none;
+}
+
+.auto-toggle-switch {
+    display: inline-block;
+    position: relative;
+    width: 60px;
+    height: 30px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.auto-toggle-switch-btn {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: left 0.3s;
+}
+
+.auto-toggle-checkbox:checked + .auto-toggle-switch {
+    background: #4cd964;
+}
+
+.auto-toggle-checkbox:checked + .auto-toggle-switch .auto-toggle-switch-btn {
+    left: 32px;
+}
+
+/* カレンダーデザイン */
+.calendar-container {
+    margin-top: 30px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    padding: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.calendar-header h3 {
+    margin: 0;
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+.cal-nav-btn {
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.cal-nav-btn:active {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.holiday-mode-btn {
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    color: #fff;
+    padding: 6px 15px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.holiday-mode-btn.active {
+    background: #e11d48; /* 赤色に発光 */
+    box-shadow: 0 0 10px rgba(225, 29, 72, 0.5);
+}
+
+.calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 5px;
+}
+
+.calendar-weekdays div:first-child {
+    color: #ef4444; /* 日曜は赤 */
+}
+.calendar-weekdays div:last-child {
+    color: #3b82f6; /* 土曜は青 */
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    animation: calendarFade 0.25s ease-out;
+}
+
+@keyframes calendarFade {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.calendar-day {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    min-height: 75px;
+    padding: 4px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.calendar-day:active {
+    transform: scale(0.97);
+}
+
+.calendar-day.empty {
+    background: transparent;
+    cursor: default;
+    border: none;
+}
+
+.calendar-day.empty:active {
+    transform: none;
+}
+
+.calendar-day.sunday, .calendar-day.holiday-day {
+    background: rgba(239, 68, 68, 0.15); /* 日曜・祝日の薄い赤 */
+}
+
+.calendar-day.saturday {
+    background: rgba(59, 130, 246, 0.1); /* 土曜の薄い青 */
+}
+
+.day-number {
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #fff;
+    text-align: left;
+    margin-bottom: 2px;
+}
+
+.calendar-day.sunday .day-number, .calendar-day.holiday-day .day-number {
+    color: #fca5a5;
+}
+
+.calendar-day.saturday .day-number {
+    color: #93c5fd;
+}
+
+/* 今日の日付ハイライト */
+.calendar-day.today {
+    border: 2px solid #00f2fe;
+    box-shadow: 0 0 8px rgba(0, 242, 254, 0.4);
+}
+
+.calendar-day.today .day-number {
+    border: 1px solid #00f2fe;
+    background: rgba(0, 242, 254, 0.2);
+    padding: 1px 5px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+/* カレンダー内の帯 */
+.day-band-list {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-top: 4px;
+    width: 100%;
+}
+
+.day-band {
+    border-radius: 3px;
+    padding: 0;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+
+/* 出退勤 (色のみ) */
+.band-yokozawa, .band-suzuki {
+    height: 6px;
+}
+
+/* 横澤 (黄色) */
+.band-yokozawa {
+    background-color: #eab308;
+}
+
+/* 鈴木 (緑) */
+.band-suzuki {
+    background-color: #22c55e;
+}
+
+/* 横澤 休日 (赤) */
+.band-yokozawa-holiday {
+    background-color: #ef4444;
+    color: #fff;
+    font-size: 8px;
+    line-height: 12px;
+    height: 12px;
+}
+
+/* 鈴木 休日 (オレンジ) */
+.band-suzuki-holiday {
+    background-color: #f97316;
+    color: #fff;
+    font-size: 8px;
+    line-height: 12px;
+    height: 12px;
+}
+
+/* 会社全体休日 (赤ベース・白文字) */
+.band-company-holiday {
+    background-color: #ef4444;
+    color: #fff;
+    font-size: 8px;
+    line-height: 12px;
+    height: 12px;
+}
+
+/* カレンダー操作ボタンコントロール */
+.calendar-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.calendar-controls .holiday-mode-btn {
+    flex: 1;
+    padding: 10px 15px;
+    font-size: 0.95rem;
+    white-space: nowrap;
+}
+
+/* ポップアップモーダル */
+.modal {
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background: #fff;
+    color: #1e293b;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    overflow: hidden;
+    animation: modalShow 0.3s ease-out;
+}
+
+@keyframes modalShow {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.close-btn {
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: #fff;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.close-btn:hover {
+    opacity: 1;
+}
+
+.modal-body {
+    padding: 20px;
+    max-height: 80vh;
+    overflow-y: auto;
+    text-align: left;
+}
+
+/* 打刻リスト */
+#modal-records-list {
+    margin-bottom: 15px;
+}
+
+.modal-record-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    border: 1px solid #e2e8f0;
+}
+
+.record-info {
+    font-weight: bold;
+}
+
+.record-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.record-btn {
+    border: none;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.record-btn.edit {
+    background: #e0f2fe;
+    color: #0369a1;
+}
+.record-btn.edit:active {
+    background: #bae6fd;
+}
+
+.record-btn.delete {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+.record-btn.delete:active {
+    background: #fecaca;
+}
+
+.modal-divider {
+    border: 0;
+    height: 1px;
+    background: #e2e8f0;
+    margin: 15px 0;
+}
+
+/* 編集・追加フォーム */
+.add-record-form h4 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    color: #333;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.form-group label {
+    width: 60px;
+    font-weight: bold;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.form-control {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    box-sizing: border-box;
+    background: #fff;
+    color: #333;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #00f2fe;
+    box-shadow: 0 0 0 2px rgba(0, 242, 254, 0.2);
+}
+
+.save-record-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    border: none;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.1s;
+    margin-top: 5px;
+}
+
+.save-record-btn:active {
+    transform: translateY(1px);
+}
+
+/* ==========================================================================
+   テーマ切り替えボタンとライトモードの設定 (スマホ対応)
+   ========================================================================== */
+
+.theme-switch-container {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10;
+}
+
+.theme-toggle-btn {
+    background: rgba(255, 255, 255, 0.25);
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    width: 44px; /* スマホのタップ推奨サイズ44x44px以上 */
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s, transform 0.1s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.theme-toggle-btn:active {
+    transform: scale(0.9);
+}
+
+/* デフォルト背景を調整 (元の青グラデーション) */
+body {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: #fff;
+    transition: background 0.5s ease;
+}
+
+/* ライトモード */
+body.light-mode {
+    background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%);
+    color: #1e293b;
+}
+
+body.light-mode .container {
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    color: #334155;
+}
+
+body.light-mode h1 {
+    color: #1e293b;
+    text-shadow: none;
+}
+
+body.light-mode .tabs {
+    background: rgba(0, 0, 0, 0.06);
+}
+
+body.light-mode .tab-label {
+    color: #64748b;
+}
+
+body.light-mode .tabs input[type="radio"]:checked + .tab-label {
+    background: #fff;
+    color: #0f172a;
+}
+
+body.light-mode .auto-mode-section {
+    background: rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .auto-mode-label {
+    color: #334155;
+}
+
+body.light-mode .auto-toggle-switch {
+    background: rgba(0, 0, 0, 0.15);
+}
+
+body.light-mode .auto-toggle-switch-btn {
+    background: #fff;
+}
+
+body.light-mode .confirm-message {
+    color: #1e293b;
+    text-shadow: none;
+}
+
+body.light-mode .datetime-input {
+    background: #fff;
+    border: 1px solid #cbd5e1;
+    color: #0f172a;
+}
+
+body.light-mode .cancel-btn {
+    background: rgba(0, 0, 0, 0.06);
+    color: #334155;
+}
+
+body.light-mode .cancel-btn:active {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .message {
+    color: #334155;
+}
+
+body.light-mode .calendar-container {
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .calendar-header h3 {
+    color: #1e293b;
+}
+
+body.light-mode .cal-nav-btn {
+    background: rgba(0, 0, 0, 0.06);
+    color: #334155;
+}
+
+body.light-mode .cal-nav-btn:active {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .holiday-mode-btn {
+    background: rgba(0, 0, 0, 0.06);
+    color: #334155;
+}
+body.light-mode .holiday-mode-btn.active {
+    background: #e11d48;
+    color: #fff;
+}
+
+body.light-mode .calendar-weekdays {
+    color: #475569;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .calendar-day {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+body.light-mode .day-number {
+    color: #475569;
+}
+
+body.light-mode .calendar-day.sunday, 
+body.light-mode .calendar-day.holiday-day {
+    background: #fee2e2;
+}
+body.light-mode .calendar-day.sunday .day-number, 
+body.light-mode .calendar-day.holiday-day .day-number {
+    color: #ef4444;
+}
+
+body.light-mode .calendar-day.saturday {
+    background: #e0f2fe;
+}
+body.light-mode .calendar-day.saturday .day-number {
+    color: #3b82f6;
+}
+
+body.light-mode .calendar-day.today {
+    border: 2px solid #3b82f6;
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
+}
+body.light-mode .calendar-day.today .day-number {
+    border: 1px solid #3b82f6;
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+}
+
+body.light-mode .theme-toggle-btn {
+    background: rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
