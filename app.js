@@ -95,13 +95,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // カレンダーの月移動イベント
         btnPrevMonth.addEventListener('click', () => {
-            currentCalDate.setMonth(currentCalDate.getMonth() - 1);
-            renderCalendar();
+            changeMonth(-1);
         });
 
         btnNextMonth.addEventListener('click', () => {
-            currentCalDate.setMonth(currentCalDate.getMonth() + 1);
-            renderCalendar();
+            changeMonth(1);
         });
 
         // 休日設定モードのトグル
@@ -181,12 +179,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (Math.abs(diffX) > 60 && Math.abs(diffX) > Math.abs(diffY)) {
                 if (diffX > 0) {
                     // 右スワイプ -> 前月へ
-                    currentCalDate.setMonth(currentCalDate.getMonth() - 1);
-                    renderCalendar();
+                    changeMonth(-1);
                 } else {
                     // 左スワイプ -> 翌月へ
-                    currentCalDate.setMonth(currentCalDate.getMonth() + 1);
-                    renderCalendar();
+                    changeMonth(1);
                 }
             }
         }, { passive: true });
@@ -296,6 +292,34 @@ document.addEventListener('DOMContentLoaded', () => {
         const m = String(date.getMonth() + 1).padStart(2, '0');
         const d = String(date.getDate()).padStart(2, '0');
         return `${y}-${m}-${d}`;
+    }
+
+    // 月移動アニメーション制御 (スワイプ方向に対応)
+    function changeMonth(direction) {
+        // スライドアウトクラスを適用
+        if (direction === 1) {
+            calendarBody.classList.add('slide-out-left');
+        } else {
+            calendarBody.classList.add('slide-out-right');
+        }
+
+        // アニメーション進行中に描画を更新し、逆方向からスライドイン
+        setTimeout(() => {
+            currentCalDate.setMonth(currentCalDate.getMonth() + direction);
+            renderCalendar();
+
+            calendarBody.classList.remove('slide-out-left', 'slide-out-right');
+            if (direction === 1) {
+                calendarBody.classList.add('slide-in-right');
+            } else {
+                calendarBody.classList.add('slide-in-left');
+            }
+
+            // アニメーション完了後にクラスをクリア
+            setTimeout(() => {
+                calendarBody.classList.remove('slide-in-left', 'slide-in-right');
+            }, 250);
+        }, 150);
     }
 
     // 2. GASからのデータ取得

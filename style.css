@@ -808,3 +808,52 @@ body.light-mode .theme-toggle-btn {
     background: rgba(0, 0, 0, 0.06);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
+
+/* ==========================================================================
+   カレンダーのスライド月移動アニメーション
+   ========================================================================== */
+
+.calendar-grid {
+    transition: transform 0.15s ease-in, opacity 0.15s ease-in;
+    will-change: transform, opacity;
+}
+
+.slide-out-left {
+    transform: translateX(-40px);
+    opacity: 0;
+}
+
+.slide-out-right {
+    transform: translateX(40px);
+    opacity: 0;
+}
+
+.slide-in-left {
+    animation: slideInLeft 0.25s forwards cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.slide-in-right {
+    animation: slideInRight 0.25s forwards cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-40px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(40px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
